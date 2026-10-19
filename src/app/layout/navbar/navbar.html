@@ -1,0 +1,42 @@
+<div class="user-info">
+  @if (authService.currentUser(); as user) {
+    <span>Bonjour, {{ user.username }}</span>
+    <button (click)="logout()">Déconnexion</button>
+  }
+</div>
+
+<ul class="menu">
+  <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a></li>
+  <li><a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a></li>
+
+  <!-- Lien admin conditionnel -->
+  @if (authService.currentUser()?.role === 'admin') {
+    <li><a routerLink="/admin" routerLinkActive="active">Administration</a></li>
+  }
+
+  <!-- Groupe Club & Administration -->
+  <li class="group">
+    <span class="group-title">Club</span>
+    <ul class="submenu">
+      <li><a routerLink="/affiliations" routerLinkActive="active">Affiliations</a></li>
+      <li><a routerLink="/memberships" routerLinkActive="active">Membership</a></li>
+      <li><a routerLink="/matchs" routerLinkActive="active">Matchs</a></li>
+      <li><a routerLink="/seasons" routerLinkActive="active">Saisons</a></li>
+      <li><a routerLink="/training-attendance" routerLinkActive="active">Présences Entraînements</a></li>
+      <li><a routerLink="/users" routerLinkActive="active">Utilisateurs</a></li>
+    </ul>
+  </li>
+
+  <!-- Groupe Matchs & Suivi -->
+  <li class="group">
+    <span class="group-title">Suivi & Matchs</span>
+    <ul class="submenu">
+      <li><a routerLink="/match-sheets" routerLinkActive="active">Feuilles de match</a></li>
+      <li><a routerLink="/opponents" routerLinkActive="active">Adversaires</a></li>
+      <li><a routerLink="/stadium" routerLinkActive="active">Stades</a></li>
+      <li><a routerLink="/standings" routerLinkActive="active">Classements</a></li>
+      <li><a routerLink="/training" routerLinkActive="active">Entraînements</a></li>
+      <li><a routerLink="/myProfile" routerLinkActive="active">Mon Profil</a></li>
+    </ul>
+  </li>
+</ul>

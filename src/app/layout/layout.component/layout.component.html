@@ -1,0 +1,27 @@
+    <header class="navbar">
+      <div class="logo">Club Management</div>
+      
+      <nav class="nav-links">
+        @if (authService.isAuthenticated()) {
+          <a routerLink="/dashboard">Accueil</a>
+          
+          <!-- 5. Conditionnement de l'affichage de l'administration au rôle admin -->
+          @if (authService.hasRole('admin')) {
+            <a routerLink="/admin" class="admin-badge">Administration</a>
+          }
+          
+          <div class="user-menu">
+            <!-- 3. Affichage du nom de l'utilisateur connecté -->
+            <span>Bonjour, <strong>{{ authService.currentUser()?.username }}</strong></span>
+            <!-- 4. Déclenchement de logout() -->
+            <button (click)="onLogout()" class="logout-btn">Déconnexion</button>
+          </div>
+        } @else {
+          <a routerLink="/login">Connexion</a>
+        }
+      </nav>
+    </header>
+
+    <main class="content-container">
+      <router-outlet></router-outlet>
+    </main>

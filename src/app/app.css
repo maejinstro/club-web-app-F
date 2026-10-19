@@ -1,0 +1,48 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+main {
+  flex: 1 0 auto;
+  margin: 2rem;
+  padding: 1.75rem 2rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(31, 36, 48, .04);
+}
+
+/* Adaptation Mobile & Tablette Portrait (< 768px) */
+@media (max-width: 768px) {
+  main {
+    margin: 0;
+    padding: 1rem 0.75rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}

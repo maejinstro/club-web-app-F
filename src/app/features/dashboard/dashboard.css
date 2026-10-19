@@ -1,0 +1,183 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Conteneur défilant pour les tableaux sur mobile */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px 5px;
+    gap: 15px;
+  }
+
+  .dashboard-section {
+    padding: 12px;
+  }
+
+  .welcome-box {
+    padding: 15px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .kpi-value {
+    font-size: 1.3rem;
+  }
+}
+
+.welcome-box {
+  background: #fdfdfd;
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1;
+}
+
+.season-badge {
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #e9ecef;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.user-card {
+  margin-top: 20px;
+  background: #fff;
+  padding: 15px;
+  border-left: 4px solid #007bff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.dashboard-section {
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1;
+  padding: 20px;
+}
+
+.dashboard-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.sub-title {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Grille KPI */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.kpi-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-card.highlight {
+  background: #f0f7ff;
+  border-color: #b8daff;
+}
+
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #212529;
+}
+
+.kpi-value.win { color: #28a745; }
+.kpi-value.draw { color: #ffc107; }
+.kpi-value.loss { color: #dc3545; }
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+.kpi-details {
+  font-size: 0.95rem;
+  color: #495057;
+  border-top: 1px solid #f1f1f1;
+  padding-top: 10px;
+}
+
+/* Tableaux */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  min-width: 480px; /* Garantit que le tableau garde une largeur lisible et scrolle horizontalement si l'écran est plus étroit */
+}
+
+.data-table th, 
+.data-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+  white-space: nowrap;
+}
+
+.data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.badge-win { background-color: #d4edda; color: #155724; }
+.badge-draw { background-color: #fff3cd; color: #856404; }
+.badge-loss { background-color: #f8d7da; color: #721c24; }
+
+/* États */
+.loading-state { color: #6c757d; font-style: italic; }
+.error-state { color: #dc3545; }
+.empty-state { color: #6c757d; font-style: italic; }
+
+.season-select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.season-select:focus {
+  outline: none;
+  border-color: #007bff;
+}

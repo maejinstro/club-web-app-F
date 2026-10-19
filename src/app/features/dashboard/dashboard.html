@@ -1,0 +1,212 @@
+<div class="dashboard-container">
+  <!-- En-tête Espace Membre -->
+  <div class="welcome-box">
+    <h2>Espace Membre</h2>
+    <p>Bienvenue sur le tableau de bord de l'application.</p>
+
+    <div class="season-badge">
+      @if (canChangeSeason()) {
+        <label for="seasonSelect"><strong>Saison de référence :</strong> </label>
+        <select 
+          id="seasonSelect" 
+          [ngModel]="selectedSeasonId()" 
+          (ngModelChange)="onSeasonChange($event)"
+          class="season-select"
+        >
+          <option [value]="1">Saison 1</option>
+          <option [value]="2">Saison 2</option>
+          <option [value]="3">Saison 3</option>
+        </select>
+      } @else {
+        <span>Saison de référence : <strong>Saison {{ selectedSeasonId() }}</strong></span>
+      }
+    </div>
+
+    @if (authService.currentUser(); as user) {
+      <div class="user-card">
+        <p><strong>ID :</strong> {{ user.idUser }}</p>
+        <p><strong>Nom d'utilisateur :</strong> {{ user.username }}</p>
+        <p><strong>Rôle attribué :</strong> {{ user.role }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Zone 1 : Indicateurs de l'équipe -->
+  <section class="dashboard-section">
+    <h3>Statistiques de l'équipe — Saison {{ selectedSeasonId() }}</h3>
+
+    @if (isLoadingTeam()) {
+      <div class="state-box loading-state">
+        <p>Chargement des statistiques de l'équipe en cours...</p>
+      </div>
+    } @else if (teamError()) {
+      <div class="state-box error-state">
+        <p>{{ teamError() }}</p>
+      </div>
+    } @else if (teamData(); as team) {
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-value">{{ team.matchesPlayed ?? 0 }}</span>
+          <span class="kpi-label">Matchs joués</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value win">{{ team.wins ?? 0 }}</span>
+          <span class="kpi-label">Victoires</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value draw">{{ team.draws ?? 0 }}</span>
+          <span class="kpi-label">Nuls</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value loss">{{ team.losses ?? 0 }}</span>
+          <span class="kpi-label">Défaites</span>
+        </div>
+        <div class="kpi-card highlight">
+          <span class="kpi-value">{{ team.points ?? 0 }}</span>
+          <span class="kpi-label">Points</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value">
+            {{ (team.goalDifference > 0 ? '+' : '') + (team.goalDifference ?? 0) }}
+          </span>
+          <span class="kpi-label">Différence</span>
+        </div>
+      </div>
+
+      <div class="kpi-details">
+        <p>
+          <strong>Buts marqués :</strong> {{ team.goalsFor ?? 0 }} | 
+          <strong>Buts encaissés :</strong> {{ team.goalsAgainst ?? 0 }}
+        </p>
+      </div>
+    }
+  </section>
+
+  <!-- Zone 2 : Derniers résultats de l'équipe -->
+  <section class="dashboard-section">
+    <h3>Derniers résultats de l'équipe</h3>
+
+    @if (isLoadingTeam()) {
+      <div class="state-box loading-state">
+        <p>Chargement des derniers résultats...</p>
+      </div>
+    } @else if (teamError()) {
+      <div class="state-box error-state">
+        <p>{{ teamError() }}</p>
+      </div>
+    } @else if (teamData(); as team) {
+      @if (team.lastMatches && team.lastMatches.length > 0) {
+        <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Adversaire</th>
+              <th>Lieu</th>
+              <th>Score</th>
+              <th>Résultat</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (match of team.lastMatches.slice(0, 5); track match.id) {
+              <tr>
+                <td>{{ match.date | date:'dd/MM/yyyy' }}</td>
+                <td>{{ match.opponent }}</td>
+                <td>{{ match.location }}</td>
+                <td>{{ match.teamScore }} – {{ match.opponentScore }}</td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'badge-win': match.result === 'W',
+                    'badge-draw': match.result === 'D',
+                    'badge-loss': match.result === 'L'
+                  }">
+                    {{ match.result }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        </div>
+      } @else {
+        <div class="state-box empty-state">
+          <p>Aucune donnée — Aucun match n'a été disputé pour cette saison.</p>
+        </div>
+      }
+    }
+  </section>
+
+  <!-- Zone 3 : Statistiques du joueur connecté -->
+  <section class="dashboard-section">
+    <h3>Mes statistiques — Saison {{ selectedSeasonId() }}</h3>
+
+    @if (isLoadingPlayer()) {
+      <div class="state-box loading-state">
+        <p>Chargement de vos statistiques en cours...</p>
+      </div>
+    } @else if (playerError()) {
+      <div class="state-box error-state">
+        <p>{{ playerError() }}</p>
+      </div>
+    } @else if (playerData(); as player) {
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-value">{{ player.matchesPlayed ?? 0 }}</span>
+          <span class="kpi-label">Matchs joués</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value">{{ player.minutes ?? 0 }}</span>
+          <span class="kpi-label">Minutes jouées</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value">{{ player.goals ?? 0 }}</span>
+          <span class="kpi-label">Buts</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-value">{{ player.assists ?? 0 }}</span>
+          <span class="kpi-label">Passes décisives</span>
+        </div>
+        <div class="kpi-card highlight">
+          <span class="kpi-value">
+            {{ (player.averageNote !== null && player.averageNote !== undefined) ? (player.averageNote | number:'1.2-2') : '—' }}
+          </span>
+          <span class="kpi-label">Note moyenne</span>
+        </div>
+      </div>
+
+      <h4 class="sub-title">Historique des matchs</h4>
+      @if (player.matchHistory && player.matchHistory.length > 0) {
+        <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Match</th>
+              <th>Minutes</th>
+              <th>Buts</th>
+              <th>Passes</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of player.matchHistory; track item.idMatch) {
+              <tr>
+                <td>{{ item.opponent }}</td>
+                <td>{{ item.playtime }}</td>
+                <td>{{ item.goals }}</td>
+                <td>{{ item.assists }}</td>
+                <td>
+                  {{ (item.note !== null && item.note !== undefined) ? (item.note | number:'1.2-2') : '—' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        </div>
+      } @else {
+        <div class="state-box empty-state">
+          <p>Aucune donnée — Aucun historique de match disponible pour cette saison.</p>
+        </div>
+      }
+    }
+  </section>
+</div>
